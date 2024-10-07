@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List App</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <h1>To-Do List</h1>
+
+        <!-- Add Task Section -->
+        <div class="add-task">
+            <input type="text" id="task-input" placeholder="Add a new task" />
+            <input type="datetime-local" id="task-time" />
+            <button id="add-task-btn">Add Task</button>
+        </div>
+
+        <!-- Task List Section -->
+        <ul id="task-list"></ul>
+
+        <!-- Edit Task Modal -->
+        <div id="edit-modal" class="modal">
+            <div class="modal-content">
+                <span id="close-modal" class="close">&times;</span>
+                <h2>Edit Task</h2>
+                <input type="text" id="edit-task-input" />
+                <input type="datetime-local" id="edit-task-time" />
+                <button id="save-task-btn">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,86 @@
+let taskList = [];
+let currentEditIndex = null;
+
+// Add a task
+document.getElementById('add-task-btn').addEventListener('click', function() {
+    const taskText = document.getElementById('task-input').value;
+    const taskTime = document.getElementById('task-time').value;
+
+    if (taskText === "") return alert("Task cannot be empty!");
+
+    taskList.push({ task: taskText, time: taskTime, completed: false });
+    renderTasks();
+    document.getElementById('task-input').value = "";
+    document.getElementById('task-time').value = "";
+});
+
+// Render tasks
+function renderTasks() {
+    const taskListElement = document.getElementById('task-list');
+    taskListElement.innerHTML = '';
+
+    taskList.forEach((taskItem, index) => {
+        const li = document.createElement('li');
+        li.classList.toggle('completed', taskItem.completed);
+
+        const taskText = document.createElement('span');
+        taskText.textContent = `${taskItem.task} - ${new Date(taskItem.time).toLocaleString()}`;
+
+        // Mark Complete Button
+        const completeButton = document.createElement('button');
+        completeButton.textContent = taskItem.completed ? "Undo" : "Complete";
+        completeButton.addEventListener('click', () => {
+            taskItem.completed = !taskItem.completed;
+            renderTasks();
+        });
+
+        // Edit Button
+        const editButton = document.createElement('button');
+        editButton.textContent = "Edit";
+        editButton.classList.add('edit');
+        editButton.addEventListener('click', () => openEditModal(index));
+
+        // Delete Button
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = "Delete";
+        deleteButton.classList.add('delete');
+        deleteButton.addEventListener('click', () => {
+            taskList.splice(index, 1);
+            renderTasks();
+        });
+
+        li.appendChild(taskText);
+        li.appendChild(completeButton);
+        li.appendChild(editButton);
+        li.appendChild(deleteButton);
+        taskListElement.appendChild(li);
+    });
+}
+
+// Open Edit Modal
+function openEditModal(index) {
+    currentEditIndex = index;
+    document.getElementById('edit-task-input').value = taskList[index].task;
+    document.getElementById('edit-task-time').value = taskList[index].time;
+    document.getElementById('edit-modal').style.display = "flex";
+}
+
+// Save Edited Task
+document.getElementById('save-task-btn').addEventListener('click', () => {
+    const updatedTask = document.getElementById('edit-task-input').value;
+    const updatedTime = document.getElementById('edit-task-time').value;
+
+    taskList[currentEditIndex].task = updatedTask;
+    taskList[currentEditIndex].time = updatedTime;
+
+    document.getElementById('edit-modal').style.display = "none";
+    renderTasks();
+});
+
+// Close Modal
+document.getElementById('close-modal').addEventListener('click', () => {
+    document.getElementById('edit-modal').style.display = "none";
+});
+
+// Initial render
+renderTasks();
